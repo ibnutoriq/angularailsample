@@ -11,3 +11,66 @@ br
 h4
   strong 2. Normalization
 p Angular normalizes an element's tag and attribute name to determine which elements match which directives. We typically refer to directives by their case-sensitive camelCase normalized name (e.g. ngModel). However, since HTML is case-insensitive, we refer to directives in the DOM by lower-case forms, typically using dash-delimited attributes on DOM elements (e.g. ng-model).
+
+p The normalization process is as follows:
+
+ol
+  li Strip x- and data- from the front of the element/attributes.
+  li Convert the :, -, or _-delimited name to camelCase.
+
+= code("x-ng-example\ndata-ng-example\n\nng:example\nng-example\nng_example")
+
+= note("Prefer using the dash-delimited format (e.g. ng-bind for ngBind). If you want to use an HTML validating tool, you can instead use the data-prefixed version (e.g. data-ng-bind for ngBind).")
+
+br
+
+h4
+  strong 3. Where to Put Directives?
+p We can put directives on element names, attributes, class names, as well as comments. See the various example below:
+
+= code("<ng-example></ng-example>\n<span ng-example=\"value\"></span>\n<!-- directive: ng-example value -->\n<span class=\"ng-example: value;\"></span>")
+
+= note("Prefer using directives via tag name and attributes over comment and class names.")
+
+br
+
+h4
+  strong 4. Creating Directives
+p Much like controllers, directives are registered on modules. To register a directive, you use the module.directive API.
+
+= note("Do not prefix your own directives with ng or they might conflict with directives included in a future version of Angular.")
+
+br
+
+h4
+  strong 4.1 Template-Expanding Directive
+p This is an example to create a directive that simply replaces its contents with a static template:
+
+br
+
+strong Script:
+= code("AngulaRailSample.directive(\"myFirstDirective\", function() {\n  return { template: \"Web Development That Doesn’t Hurt\" };\n});")
+
+strong HTML:
+= code("<p my-first-directive></p>")
+
+strong Result:
+p my-first-directive=""
+
+br
+
+h4
+  strong 4.2 Using Template URL
+p Same with the first example, but now we will break it apart into its own HTML file and load it with the templateUrl option:
+
+strong Script:
+= code("AngulaRailSample.directive(\"mySecondDirective\", function() {\n  return { templateUrl: \"/partial_example\" };\n});")
+
+strong Partial:
+= code("<p>Ruby on Rails is a breakthrough in lowering the barriers of entry to programming. Powerful web applications that formerly might have taken weeks or months to develop can be produced in a matter of days. Rails is the most well thought-out web development framework I’ve ever used. And that’s in a decade of doing web applications for a living. I’ve built my own frameworks, helped develop the Servlet API, and have created more than a few web servers from scratch. Nobody has done it like this before.</p>")
+
+strong HTML:
+= code("<p my-second-directive></p>")
+
+strong Result:
+p my-second-directive=""

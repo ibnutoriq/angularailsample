@@ -13,3 +13,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require angular
+//= require angular-application
+//= require angular-controllers
+//= require angular-directives
