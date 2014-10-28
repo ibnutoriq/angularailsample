@@ -73,4 +73,51 @@ strong HTML:
 = code("<p my-second-directive></p>")
 
 strong Result:
-p my-second-directive=""
+p.box my-second-directive=""
+
+br
+
+h4
+  strong 4.3 Using Template URL with Parameters
+p Same with the second example, but now we will use parameters attributes to specify which page to render:
+
+strong Script:
+= code("AngulaRailSample.controller(\"myCustomController\", [\"$scope\", function ($scope) {\n  $scope.example = { title: \"AngularJS on Rails\", price: \"Free\" };\n}]);\n\nAngulaRailSample.directive(\"myThirdDirective\", function() {\n  return { templateUrl: function(elem, attr) {\n    return \"/partial_\" + attr.type;\n  }};\n});")
+
+.row
+  .col-md-6
+    strong HTML:
+    = code("<div ng-controller=\"myCustomController\">\n  <p my-third-directive type=\"title\"</p>\n  <p my-third-directive type=\"price\"</p>\n</div>")
+  .col-md-3
+    strong Title:
+    pre
+      code ng-non-bindable="" Title: {{example.title}}
+  .col-md-3
+    strong Price:
+    pre
+      code ng-non-bindable="" Price: {{example.price}}
+
+strong Result:
+.box
+  div ng-controller="myCustomController"
+    p my-third-directive="" type="title"
+    p my-third-directive="" type="price"
+
+= note("When you create a directive, it is restricted to attribute and elements only by default. In order to create directives that are triggered by class name, you need to use the restrict option.")
+
+br
+
+h4
+  strong 4.4 Using Restrict Option
+p The restrict option is typically set to element, attribute and class:
+ul
+  li "A" - Matches Attribute name.
+  li "E" - Matches Element name.
+  li "C" - Matches Class name.
+
+p You can also combine the restrict option like this:
+ul
+  li "AEC"
+
+strong Example:
+= code("AngulaRailSample.directive(\"myFirstDirective\", function() {\n  return { restrict: \"A\", template: \"Web Development That Doesn’t Hurt\" };\n});")

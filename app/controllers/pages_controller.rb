@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
-  layout false, only: [:partial_example]
+  layout false, except: [:home, :directives]
 
   def home
   end
@@ -8,5 +8,11 @@ class PagesController < ApplicationController
   end
 
   def partial_example
+  end
+
+  def partial_title
+  end
+
+  def partial_price
   end
 end
