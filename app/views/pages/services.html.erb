@@ -18,21 +18,19 @@
        $scope.callNotify = function(msg) {
          notify.yetAnotherAlertMessage(msg);
        };
-     }]);
-
-    AngulaRailSample
-      .factory('notify', ['$window', function(win) {
-        var msgs = [];
-        return {
-          yetAnotherAlertMessage: function(msg) {
-            msgs.push(msg);
-            if (msgs.length == 3) {
-              win.alert(msgs.join("\n"));
-              msgs = [];
-            };
-          }
-        };
-      }]);
+     }])
+    .factory('notify', ['$window', function(win) {
+      var msgs = [];
+      return {
+        yetAnotherAlertMessage: function(msg) {
+          msgs.push(msg);
+          if (msgs.length == 3) {
+            win.alert(msgs.join("\n"));
+            msgs = [];
+          };
+        }
+      };
+    }]);
   </code>
 </pre>
 
@@ -82,9 +80,8 @@
           return "Factory says \"Goodbye " + text + "\"";
         }  
       }               
-    });
-
-    AngulaRailSample.service('testService', function(){
+    })
+    .service('testService', function(){
       this.sayHello = function(text){
         return "Service says \"Hello " + text + "\"";
       };        
@@ -93,21 +90,19 @@
       };   
     });
 
-    AngulaRailSample
-      .controller('HelloController', ['$scope','testService', 'testFactory',
-        function ($scope, testService, testFactory) {
-          $scope.fromService = testService.sayHello("World");
-          $scope.fromFactory = testFactory.sayHello("World");
-        }
-      ]);
+    .controller('HelloController', ['$scope','testService', 'testFactory',
+      function ($scope, testService, testFactory) {
+        $scope.fromService = testService.sayHello("World");
+        $scope.fromFactory = testFactory.sayHello("World");
+      }
+    ]);
 
-    AngulaRailSample
-      .controller('GoodbyeController', ['$scope','testService', 'testFactory',
-        function ($scope, testService, testFactory) {
-          $scope.fromService = testService.sayGoodbye("World");
-          $scope.fromFactory = testFactory.sayGoodbye("World");
-        }
-      ]);
+    .controller('GoodbyeController', ['$scope','testService', 'testFactory',
+      function ($scope, testService, testFactory) {
+        $scope.fromService = testService.sayGoodbye("World");
+        $scope.fromFactory = testFactory.sayGoodbye("World");
+      }
+    ]);
   </code>
 </pre>
 

@@ -3,9 +3,7 @@ AngulaRailSample
      $scope.callNotify = function(msg) {
        notify.yetAnotherAlertMessage(msg);
      };
-   }]);
-
-AngulaRailSample
+   }])
   .factory('notify', ['$window', function(win) {
     var msgs = [];
     return {
