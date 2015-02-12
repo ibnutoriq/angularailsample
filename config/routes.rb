@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   root 'pages#home'
   
   get 'directives',      to: 'pages#directives',      as: 'directives'
+  get 'services' => 'pages#services', as: 'services'
   get 'partial_example', to: 'pages#partial_example', as: 'partial_example'
   get 'partial_title',   to: 'pages#partial_title',   as: 'partial_title'
   get 'partial_price',   to: 'pages#partial_price',   as: 'partial_price'

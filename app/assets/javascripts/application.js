@@ -16,3 +16,6 @@
 //= require angular-application
 //= require angular-controllers
 //= require angular-directives
+//= require angular-notify
+//= require angular-service-factory
+//= require prism

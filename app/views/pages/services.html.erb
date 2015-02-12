@@ -1,0 +1,144 @@
+<h1>Services</h1>
+<hr>
+<h4><strong>1. What is a service?</strong></h4>
+<p>In AngularJS world, the services are singleton objects or functions that carry out specific tasks. It holds some business logic. The purpose of AngularJS service / factory function is to generate a single object or function that represents the service to rest of the application. That object or function is passed as a parameter to any other factory function which specifies a dependency on this service.</p>
+
+<%= image_tag 'angular-js-service-diagram.png', class: 'img-responsive' %>
+
+<br>
+
+<h4><strong>2. Using a Service</strong></h4>
+<p>To use an Angular service, you add it as a dependency for the component (controller, service, filter or directive) that depends on the service. Angular's dependency injection subsystem takes care of the rest.</p>
+
+<strong>js</strong>
+<pre class="line-numbers">
+  <code class="language-javascript">
+  AngulaRailSample
+    .controller('MyController', ['$scope','notify', function ($scope, notify) {
+       $scope.callNotify = function(msg) {
+         notify.yetAnotherAlertMessage(msg);
+       };
+     }]);
+
+    AngulaRailSample
+      .factory('notify', ['$window', function(win) {
+        var msgs = [];
+        return {
+          yetAnotherAlertMessage: function(msg) {
+            msgs.push(msg);
+            if (msgs.length == 3) {
+              win.alert(msgs.join("\n"));
+              msgs = [];
+            };
+          }
+        };
+      }]);
+  </code>
+</pre>
+
+<strong>html</strong>
+<pre class="line-numbers" data-lang="HTML">
+  <code class="language-markup">
+  &lt;div id="simple" ng-controller="MyController">
+      &lt;p>Let's try this simple notify service, injected into the controller...&lt;/p>
+      &lt;input ng-init="message='test'" ng-model="message">
+      &lt;button ng-click="callNotify(message);">NOTIFY&lt;/button>
+      &lt;p>(you have to click 3 times to see an alert)&lt;/p>
+    &lt;/div>
+  </code>
+</pre>
+
+<strong>result</strong>
+<div class="well">
+  <div id="simple" ng-controller="MyController">
+    <p>Let's try this simple notify service, injected into the controller...</p>
+    <input ng-init="message='test'" ng-model="message" >
+    <button ng-click="callNotify(message);">NOTIFY</button>
+    <p>(you have to click 3 times to see an alert)</p>
+  </div>
+</div>
+
+<h4><strong>3. Service vs factory</strong></h4>
+<h5><strong>a. Service</strong></h5>
+<p><strong>Syntax:</strong> module.service('serviceName', function);</p>
+<p><strong>Result:</strong> When declaring serviceName as an injectable argument you will be provided with the <strong>instance of a function</strong> passed to module.service.</p>
+<p><strong>Usage:</strong> Could be useful for <strong>sharing utility functions</strong> that are useful to invoke by simply appending () to the injected function reference. Could also be run with injectedArg.call(this) or similar.</p>
+
+<h5><strong>b. Factory</strong></h5>
+<p><strong>Syntax:</strong> module.factory('factoryName', function);</p>
+<p><strong>Result:</strong> When declaring factoryName as an injectable argument you will be provided the <strong>value that is returned by invoking the function reference</strong> passed to module.factory.</p>
+<p><strong>Usage:</strong> Could be useful for returning a <strong>‘class’</strong> function that can then be new’ed to create instances.</p>
+<br>
+<strong><h5>Example service and factory</h5></strong>
+<strong>js</strong>
+<pre class="line-numbers">
+  <code class="language-javascript">
+  AngulaRailSample.factory('testFactory', function(){
+      return {
+        sayHello: function(text){
+          return "Factory says \"Hello " + text + "\"";
+        },
+        sayGoodbye: function(text){
+          return "Factory says \"Goodbye " + text + "\"";
+        }  
+      }               
+    });
+
+    AngulaRailSample.service('testService', function(){
+      this.sayHello = function(text){
+        return "Service says \"Hello " + text + "\"";
+      };        
+      this.sayGoodbye = function(text){
+        return "Service says \"Goodbye " + text + "\"";
+      };   
+    });
+
+    AngulaRailSample
+      .controller('HelloController', ['$scope','testService', 'testFactory',
+        function ($scope, testService, testFactory) {
+          $scope.fromService = testService.sayHello("World");
+          $scope.fromFactory = testFactory.sayHello("World");
+        }
+      ]);
+
+    AngulaRailSample
+      .controller('GoodbyeController', ['$scope','testService', 'testFactory',
+        function ($scope, testService, testFactory) {
+          $scope.fromService = testService.sayGoodbye("World");
+          $scope.fromFactory = testFactory.sayGoodbye("World");
+        }
+      ]);
+  </code>
+</pre>
+
+<strong>html</strong>
+<pre class="line-numbers" data-lang="HTML">
+  <code class="language-markup">
+  &lt;div ng-controller="HelloCtrl">
+      &lt;p><code ng-non-bindable>{{fromService}}</code>&lt;/p>
+      &lt;p><code ng-non-bindable>{{fromFactory}}</code>&lt;/p>
+    &lt;/div>
+    &lt;br />
+    &lt;div ng-controller="GoodbyeCtrl">
+      &lt;p><code ng-non-bindable>{{fromService}}</code>&lt;/p>
+      &lt;p><code ng-non-bindable>{{fromFactory}}</code>&lt;/p>
+    &lt;/div>
+  </code>
+</pre>
+<strong>result</strong>
+<div class="well">
+  <div ng-controller="HelloController">
+    <p>{{fromService}}</p>
+    <p>{{fromFactory}}</p>
+  </div>
+  <br />
+  <div ng-controller="GoodbyeController">
+    <p>{{fromService}}</p>
+    <p>{{fromFactory}}</p>
+  </div>
+</div>
+
+<h4><strong>4. Conclusion</strong></h4>
+<p>So, <strong>use a factory when you have complex logic</strong> in your service and <strong>you don't what expose this complexity.</strong></p>
+<p>In other cases <strong>if you want to return an instance of a service just use service.</strong></p>
+<p>But you'll see with time that you'll use factory in 80%, maybe</p>
